@@ -1,12 +1,14 @@
--- ################################### Creation de la table Joueur ###################################
+
 DROP TABLE IF EXISTS joueur CASCADE;
 DROP TABLE IF EXISTS activite CASCADE;
 DROP TABLE IF EXISTS capsule CASCADE;
 DROP TABLE IF EXISTS activite_joueur CASCADE;
 DROP TABLE IF EXISTS capsule_activite CASCADE;
+DROP TABLE IF EXISTS avatar_joueur CASCADE;
 
+
+-- ################################### Creation de la table Joueur ###################################
 DROP TYPE IF EXISTS genre_joueur;
-
 CREATE TYPE genre_joueur AS ENUM
 	('f','h','x');
 CREATE TABLE joueur(
@@ -58,10 +60,22 @@ CREATE TABLE capsule_activite(
 	CONSTRAINT pk_id_cap_act	PRIMARY KEY(id)
 );
 
+-- ################################### Creation de la table intermédiaire avatar-joueur ###################################
+CREATE TABLE avatar_joueur(
+	id						NUMERIC(7,0),
+	avatar						VARCHAR(32),
+	
+	CONSTRAINT pk_id_ava_jou			PRIMARY KEY(id)
+);
+
 -- ################################### ALTERS ###################################
 ALTER TABLE joueur
 	ADD CONSTRAINT fk_liste_activite	
 		FOREIGN KEY(liste_activites) REFERENCES activite_joueur(id);
+
+ALTER TABLE joueur
+	ADD CONSTRAINT fk_liste_avatars	
+ 		FOREIGN KEY(liste_avatars) REFERENCES avatar_joueur(id);
 		
 ALTER TABLE activite_joueur
 	ADD CONSTRAINT fk_activites	
@@ -77,11 +91,9 @@ ALTER TABLE capsule_activite
 		
 -- ALTER TABLE capsule
 -- 	ADD CONSTRAINT fk_avatars_capsule	
--- 		FOREIGN KEY (liste_avatars) REFERENCES avatars_capsule(id_ava_cap);
+-- 		FOREIGN KEY (liste_avatars) REFERENCES avatars_capsule(id);
 		
--- ALTER TABLE joueur
--- 	ADD CONSTRAINT fk_liste_avatars	
--- 		FOREIGN KEY(liste_avatars) REFERENCES avatars_joueur(id_ava_jou);
+
 		
 
 
