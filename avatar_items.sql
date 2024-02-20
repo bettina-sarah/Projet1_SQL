@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS liste_phrases;
-DROP TABLE IF EXISTS liste_couleurs;
-DROP TABLE IF EXISTS item;
-DROP TABLE IF EXISTS avatar;
-DROP TABLE IF EXISTS liste_items_avatar;
+DROP TABLE IF EXISTS liste_phrases CASCADE;
+DROP TABLE IF EXISTS liste_couleurs CASCADE;
+DROP TABLE IF EXISTS item CASCADE;
+DROP TABLE IF EXISTS avatar CASCADE;
+DROP TABLE IF EXISTS liste_items_avatar CASCADE;
 
 CREATE TABLE liste_phrases (
 	id			NUMERIC(7,0)		PRIMARY KEY,
@@ -47,13 +47,24 @@ CREATE TABLE liste_items_avatar (
 	CONSTRAINT fk_item_avatar FOREIGN KEY (item) REFERENCES item(nom)
 );
 
+CREATE TABLE liste_habiletes_avatar (
+	id							NUMERIC(7,0)		PRIMARY KEY,
+	date_obtention				TIMESTAMP 			DEFAULT CURRENT_TIMESTAMP,
+	niveau_actuel				INTEGER				DEFAULT 1,
+	habilete					VARCHAR(32),
+	
+	CONSTRAINT niv CHECK (niveau_actuel BETWEEN 1 AND 100)
+	-- CONSTRAINT fk_hab_av FOREIGN KEY (habilete) REFERENCES habilete(nom)
+);
+
+
 
 
 
 ALTER TABLE avatar
     ADD CONSTRAINT fk_av_phrases FOREIGN KEY (liste_phrases_avatar) REFERENCES liste_phrases(id),
 	ADD CONSTRAINT fk_av_couleurs FOREIGN KEY (liste_couleurs_avatar) REFERENCES liste_couleurs(id),
-	-- ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes_avatar) REFERENCES liste_habiletes(id),
+	ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes_avatar) REFERENCES liste_habiletes_avatar(id),
 	ADD CONSTRAINT fk_av_items FOREIGN KEY (liste_items_avatar) REFERENCES liste_items_avatar(id);
 	
 	
