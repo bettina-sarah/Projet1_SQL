@@ -9,18 +9,21 @@ DROP TABLE IF EXISTS Habilete;
 DROP TABLE IF EXISTS ListeCoefsHabilete;
 
 CREATE TABLE Jeu(
-nom VARCHAR(6),
+nom VARCHAR(16),
+sigle VARCHAR(6),
 description TEXT,
 listeItemRare NUMERIC(7,0),
 listeHabiletes NUMERIC(7,0),
 
 CONSTRAINT Pk_Jeu PRIMARY KEY (nom),
 CONSTRAINT cc_jeu_text CHECK(LENGTH(description)<=2048),
-CONSTRAINT cc_jeu_nom UNIQUE(nom)
+CONSTRAINT cc_jeu_nom UNIQUE(nom),
+CONSTRAINT cc_jeu_sigUN UNIQUE(sigle)
 );
 
 CREATE TABLE Habilete(
 nom VARCHAR(32),
+sigle VARCHAR(3),
 energieMaximum NUMERIC(4,3),
 listeDeCoef NUMERIC(7,0),
 description VARCHAR(1024),
@@ -28,7 +31,8 @@ description VARCHAR(1024),
 CONSTRAINT Pk_Habilete PRIMARY KEY (nom),
 CONSTRAINT cc_hab_nom UNIQUE(nom),
 CONSTRAINT cc_hab_ener CHECK(energieMaximum BETWEEN 0 AND 1000),
-CONSTRAINT cc_hab_nomS CHECK(nom LIKE 'S%')
+CONSTRAINT cc_hab_sig CHECK(sigle LIKE 'S%'),
+CONSTRAINT cc_hab_sigUN UNIQUE(sigle)
 );
 
 CREATE TABLE ListeCoefsHabilete(
@@ -44,7 +48,7 @@ CREATE TABLE ListeHabileteMonde(
 id NUMERIC(7,0),
 habilete VARCHAR(32),	
 	
-CONSTRAINT Pk_ListHabilte PRIMARY KEY (id)
+CONSTRAINT Pk_ListHabilete PRIMARY KEY (id)
 );
 
 ALTER TABLE Jeu
