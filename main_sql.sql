@@ -1,3 +1,5 @@
+-- ******************************** BETTINA --
+
 DROP TABLE IF EXISTS liste_phrases CASCADE;
 DROP TABLE IF EXISTS liste_couleurs CASCADE;
 DROP TABLE IF EXISTS item CASCADE;
@@ -47,36 +49,51 @@ CREATE TABLE liste_items_avatar (
 	CONSTRAINT fk_item_avatar FOREIGN KEY (item) REFERENCES item(nom)
 );
 
-
+CREATE TABLE liste_habiletes_avatar (
+	id							NUMERIC(7,0)		PRIMARY KEY,
+	date_obtention				TIMESTAMP 			DEFAULT CURRENT_TIMESTAMP,
+	niveau_actuel				INTEGER				DEFAULT 1,
+	habilete					VARCHAR(32),
+	
+	CONSTRAINT niv CHECK (niveau_actuel BETWEEN 1 AND 100)
+	-- CONSTRAINT fk_hab_av FOREIGN KEY (habilete) REFERENCES habilete(nom)
+);
 
 
 ALTER TABLE avatar
     ADD CONSTRAINT fk_av_phrases FOREIGN KEY (liste_phrases_avatar) REFERENCES liste_phrases(id),
 	ADD CONSTRAINT fk_av_couleurs FOREIGN KEY (liste_couleurs_avatar) REFERENCES liste_couleurs(id),
-	-- ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes_avatar) REFERENCES liste_habiletes(id),
+	ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes_avatar) REFERENCES liste_habiletes_avatar(id),
 	ADD CONSTRAINT fk_av_items FOREIGN KEY (liste_items_avatar) REFERENCES liste_items_avatar(id);
 	
-	
-	
-	
--------- YOSEF
 
--- ALTER TABLE IF EXISTS Jeu DROP CONSTRAINT IF EXISTS fk_jeu_items;
-ALTER TABLE IF EXISTS Jeu DROP CONSTRAINT IF EXISTS fk_jeu_habiletes;
-ALTER TABLE IF EXISTS Habilete DROP CONSTRAINT IF EXISTS fk_hab_lsCoef;
-ALTER TABLE IF EXISTS ListeHabileteMonde DROP CONSTRAINT IF EXISTS fk_habMon_hab;
+-- ******************************** YOSEF--
 
-DROP TABLE IF EXISTS Jeu;
-DROP TABLE IF EXISTS ListeHabileteMonde;
-DROP TABLE IF EXISTS Habilete;
-DROP TABLE IF EXISTS ListeCoefsHabilete;
+-- ALTER TABLE IF EXISTS jeu DROP CONSTRAINT IF EXISTS fk_jeu_items;
+ALTER TABLE IF EXISTS jeu DROP CONSTRAINT IF EXISTS fk_jeu_habiletes;
+ALTER TABLE IF EXISTS habilete DROP CONSTRAINT IF EXISTS fk_hab_lsCoef;
+ALTER TABLE IF EXISTS liste_habilete_monde DROP CONSTRAINT IF EXISTS fk_habMon_hab;
+ALTER TABLE IF EXISTS liste_items_monde DROP CONSTRAINT IF EXISTS fk_ItemMon_item;
+-- ALTER TABLE IF EXISTS liste_avatars_capsule DROP CONSTRAINT IF EXISTS fk_avt_avt;
+ALTER TABLE IF EXISTS liste_avatars_capsule DROP CONSTRAINT IF EXISTS fk_avt_vis;
+ALTER TABLE IF EXISTS liste_monde_duree DROP CONSTRAINT IF EXISTS fk_mon_dur;
+ALTER TABLE IF EXISTS monde_duree DROP CONSTRAINT IF EXISTS fk_mon_duree;
 
-CREATE TABLE Jeu(
+DROP TABLE IF EXISTS jeu;
+DROP TABLE IF EXISTS liste_habilete_monde;
+DROP TABLE IF EXISTS habilete;
+DROP TABLE IF EXISTS liste_coefs_habilete;
+DROP TABLE IF EXISTS liste_items_monde;
+DROP TABLE IF EXISTS liste_avatars_capsule;
+DROP TABLE IF EXISTS liste_monde_duree;
+DROP TABLE IF EXISTS monde_duree;
+
+CREATE TABLE jeu(
 nom VARCHAR(16),
 sigle VARCHAR(6),
 description TEXT,
-listeItemRare NUMERIC(7,0),
-listeHabiletes NUMERIC(7,0),
+liste_item_rare NUMERIC(7,0),
+liste_habiletes NUMERIC(7,0),
 
 CONSTRAINT Pk_Jeu PRIMARY KEY (nom),
 CONSTRAINT cc_jeu_text CHECK(LENGTH(description)<=2048),
@@ -84,21 +101,21 @@ CONSTRAINT cc_jeu_nom UNIQUE(nom),
 CONSTRAINT cc_jeu_sigUN UNIQUE(sigle)
 );
 
-CREATE TABLE Habilete(
+CREATE TABLE habilete(
 nom VARCHAR(32),
 sigle VARCHAR(3),
-energieMaximum NUMERIC(4,3),
-listeDeCoef NUMERIC(7,0),
+energie_maximum NUMERIC(4,3),
+liste_de_coef NUMERIC(7,0),
 description VARCHAR(1024),
 
 CONSTRAINT Pk_Habilete PRIMARY KEY (nom),
 CONSTRAINT cc_hab_nom UNIQUE(nom),
-CONSTRAINT cc_hab_ener CHECK(energieMaximum BETWEEN 0 AND 1000),
+CONSTRAINT cc_hab_ener CHECK(energie_maximum BETWEEN 0 AND 1000),
 CONSTRAINT cc_hab_sig CHECK(sigle LIKE 'S%'),
 CONSTRAINT cc_hab_sigUN UNIQUE(sigle)
 );
 
-CREATE TABLE ListeCoefsHabilete(
+CREATE TABLE liste_coefs_habilete(
 id NUMERIC(7,0),
 coef1 DOUBLE PRECISION DEFAULT 0,
 coef2 DOUBLE PRECISION DEFAULT 0,
@@ -107,40 +124,91 @@ coef3 DOUBLE PRECISION DEFAULT 1,
 CONSTRAINT Pk_ListCoef PRIMARY KEY (id)
 );
 
-CREATE TABLE ListeHabileteMonde(
+CREATE TABLE liste_habilete_monde(
 id NUMERIC(7,0),
 habilete VARCHAR(32),	
 	
 CONSTRAINT Pk_ListHabilete PRIMARY KEY (id)
 );
 
-ALTER TABLE Jeu
+CREATE TABLE liste_items_monde(
+id NUMERIC(7,0),
+item VARCHAR(32),
+
+CONSTRAINT Pk_ListItems PRIMARY KEY (id),
+
+);
+
+CREATE TABLE liste_avatars_capsule(
+id NUMERIC(7,0),
+avatar VARCHAR(32),
+visite NUMERIC(7,0),
+	
+CONSTRAINT Pk_List_avatars PRIMARY KEY (id)
+);
+
+CREATE TABLE liste_monde_duree(
+id NUMERIC(7,0),
+monde_duree NUMERIC(7,0),
+
+CONSTRAINT Pk_List_monde PRIMARY KEY (id)
+);
+
+CREATE TABLE monde_duree(
+id NUMERIC(7,0),
+monde VARCHAR(16),
+duree BIGINT,
+
+CONSTRAINT Pk_mon_duree PRIMARY KEY (id),
+CONSTRAINT cc_duree	CHECK(duree > 0)
+);
+
+
+ALTER TABLE jeu
 -- 	ADD CONSTRAINT fk_jeu_items FOREIGN KEY (listeItemRare) REFERENCES listeItemsMonde(id)
 -- 	ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT fk_jeu_habiletes FOREIGN KEY (listeHabiletes) REFERENCES ListeHabileteMonde(id)
+	ADD CONSTRAINT fk_jeu_habiletes FOREIGN KEY (liste_habiletes) REFERENCES liste_habilete_monde(id)
 	ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE Habilete
-	ADD CONSTRAINT fk_hab_lsCoef FOREIGN KEY (listeDeCoef) REFERENCES ListeCoefsHabilete(id)
+	ADD CONSTRAINT fk_hab_lsCoef FOREIGN KEY (liste_de_coef) REFERENCES liste_coefs_habilete(id)
 	ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE ListeHabileteMonde
-	ADD CONSTRAINT fk_habMon_hab FOREIGN KEY (habilete) REFERENCES Habilete(nom)
+ALTER TABLE liste_habilete_monde
+	ADD CONSTRAINT fk_habMon_hab FOREIGN KEY (habilete) REFERENCES habilete(nom)
 	ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- ALTER TABLE liste_items_monde
+-- 	ADD CONSTRAINT fk_ItemMon_item FOREIGN KEY (item) REFERENCES Item(nom)
+-- 	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE liste_avatars_capsule
+-- 	ADD CONSTRAINT fk_avt_avt FOREIGN KEY (avatar) REFERENCES avatar(nom)
+-- 	ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT fk_avt_vis FOREIGN KEY (visite) REFERENCES liste_monde_duree(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE liste_monde_duree
+	ADD CONSTRAINT fk_mon_dur FOREIGN KEY (monde_duree) REFERENCES monde_duree(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE monde_duree
+	ADD CONSTRAINT fk_mon_duree FOREIGN KEY (monde) REFERENCES jeu(nom)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- -- ******************************** FRANK
 
 
---------FRANC
-
--- ################################### Creation de la table Joueur ###################################
 DROP TABLE IF EXISTS joueur CASCADE;
 DROP TABLE IF EXISTS activite CASCADE;
 DROP TABLE IF EXISTS capsule CASCADE;
 DROP TABLE IF EXISTS activite_joueur CASCADE;
 DROP TABLE IF EXISTS capsule_activite CASCADE;
+DROP TABLE IF EXISTS avatar_joueur CASCADE;
 
+
+-- ################################### Creation de la table Joueur ###################################
 DROP TYPE IF EXISTS genre_joueur;
-
 CREATE TYPE genre_joueur AS ENUM
 	('f','h','x');
 CREATE TABLE joueur(
@@ -192,10 +260,22 @@ CREATE TABLE capsule_activite(
 	CONSTRAINT pk_id_cap_act	PRIMARY KEY(id)
 );
 
+-- ################################### Creation de la table intermédiaire avatar-joueur ###################################
+CREATE TABLE avatar_joueur(
+	id						NUMERIC(7,0),
+	avatar						VARCHAR(32),
+	
+	CONSTRAINT pk_id_ava_jou			PRIMARY KEY(id)
+);
+
 -- ################################### ALTERS ###################################
 ALTER TABLE joueur
 	ADD CONSTRAINT fk_liste_activite	
 		FOREIGN KEY(liste_activites) REFERENCES activite_joueur(id);
+
+ALTER TABLE joueur
+	ADD CONSTRAINT fk_liste_avatars	
+ 		FOREIGN KEY(liste_avatars) REFERENCES avatar_joueur(id);
 		
 ALTER TABLE activite_joueur
 	ADD CONSTRAINT fk_activites	
@@ -211,11 +291,9 @@ ALTER TABLE capsule_activite
 		
 -- ALTER TABLE capsule
 -- 	ADD CONSTRAINT fk_avatars_capsule	
--- 		FOREIGN KEY (liste_avatars) REFERENCES avatars_capsule(id_ava_cap);
+-- 		FOREIGN KEY (liste_avatars) REFERENCES avatars_capsule(id);
 		
--- ALTER TABLE joueur
--- 	ADD CONSTRAINT fk_liste_avatars	
--- 		FOREIGN KEY(liste_avatars) REFERENCES avatars_joueur(id_ava_jou);
+
 		
 
 
@@ -225,6 +303,10 @@ ALTER TABLE capsule_activite
 
 
 
+
+	
+	
+	
 	
 	
 	
