@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS liste_couleurs CASCADE;
 DROP TABLE IF EXISTS item CASCADE;
 DROP TABLE IF EXISTS avatar CASCADE;
 DROP TABLE IF EXISTS liste_items_avatar CASCADE;
+DROP TABLE IF EXISTS liste_habiletes_avatar CASCADE;
 
 CREATE TABLE liste_phrases (
 	id			NUMERIC(7,0)		PRIMARY KEY,
@@ -35,8 +36,8 @@ CREATE TABLE avatar (
 	liste_couleurs_avatar		NUMERIC(7,0),
 	date_creation				DATE			CHECK (date_creation >= CURRENT_DATE),
 	moX							BIGINT			CHECK (moX BETWEEN -1000000000000 AND 1000000000000),
-	liste_habiletes_avatar		NUMERIC(7,0),
-	liste_items_avatar			NUMERIC(7,0)
+	liste_habiletes				NUMERIC(7,0),
+	liste_items					NUMERIC(7,0)
 );
 
 CREATE TABLE liste_items_avatar (
@@ -55,38 +56,43 @@ CREATE TABLE liste_habiletes_avatar (
 	niveau_actuel				INTEGER				DEFAULT 1,
 	habilete					VARCHAR(32),
 	
-	CONSTRAINT niv CHECK (niveau_actuel BETWEEN 1 AND 100)
-	-- CONSTRAINT fk_hab_av FOREIGN KEY (habilete) REFERENCES habilete(nom)
+	CONSTRAINT niv CHECK (niveau_actuel BETWEEN 1 AND 100),
+	CONSTRAINT fk_hab_av FOREIGN KEY (habilete) REFERENCES habilete(nom)
 );
 
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_phrases;
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_couleurs;
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_habiletes;
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_items;
 
 ALTER TABLE avatar
     ADD CONSTRAINT fk_av_phrases FOREIGN KEY (liste_phrases_avatar) REFERENCES liste_phrases(id),
 	ADD CONSTRAINT fk_av_couleurs FOREIGN KEY (liste_couleurs_avatar) REFERENCES liste_couleurs(id),
-	ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes_avatar) REFERENCES liste_habiletes_avatar(id),
-	ADD CONSTRAINT fk_av_items FOREIGN KEY (liste_items_avatar) REFERENCES liste_items_avatar(id);
-	
+	ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes) REFERENCES liste_habiletes_avatar(id),
+	ADD CONSTRAINT fk_av_items FOREIGN KEY (liste_items) REFERENCES liste_items_avatar(id);
+
+
 
 -- ******************************** YOSEF--
 
--- ALTER TABLE IF EXISTS jeu DROP CONSTRAINT IF EXISTS fk_jeu_items;
+ALTER TABLE IF EXISTS jeu DROP CONSTRAINT IF EXISTS fk_jeu_items;
 ALTER TABLE IF EXISTS jeu DROP CONSTRAINT IF EXISTS fk_jeu_habiletes;
 ALTER TABLE IF EXISTS habilete DROP CONSTRAINT IF EXISTS fk_hab_lsCoef;
 ALTER TABLE IF EXISTS liste_habilete_monde DROP CONSTRAINT IF EXISTS fk_habMon_hab;
 ALTER TABLE IF EXISTS liste_items_monde DROP CONSTRAINT IF EXISTS fk_ItemMon_item;
--- ALTER TABLE IF EXISTS liste_avatars_capsule DROP CONSTRAINT IF EXISTS fk_avt_avt;
+ALTER TABLE IF EXISTS liste_avatars_capsule DROP CONSTRAINT IF EXISTS fk_avt_avt;
 ALTER TABLE IF EXISTS liste_avatars_capsule DROP CONSTRAINT IF EXISTS fk_avt_vis;
 ALTER TABLE IF EXISTS liste_monde_duree DROP CONSTRAINT IF EXISTS fk_mon_dur;
 ALTER TABLE IF EXISTS monde_duree DROP CONSTRAINT IF EXISTS fk_mon_duree;
 
-DROP TABLE IF EXISTS jeu;
-DROP TABLE IF EXISTS liste_habilete_monde;
-DROP TABLE IF EXISTS habilete;
-DROP TABLE IF EXISTS liste_coefs_habilete;
-DROP TABLE IF EXISTS liste_items_monde;
-DROP TABLE IF EXISTS liste_avatars_capsule;
-DROP TABLE IF EXISTS liste_monde_duree;
-DROP TABLE IF EXISTS monde_duree;
+DROP TABLE IF EXISTS jeu CASCADE;
+DROP TABLE IF EXISTS liste_habilete_monde CASCADE;
+DROP TABLE IF EXISTS habilete CASCADE;
+DROP TABLE IF EXISTS liste_coefs_habilete CASCADE;
+DROP TABLE IF EXISTS liste_items_monde CASCADE;
+DROP TABLE IF EXISTS liste_avatars_capsule CASCADE;
+DROP TABLE IF EXISTS liste_monde_duree CASCADE;
+DROP TABLE IF EXISTS monde_duree CASCADE;
 
 CREATE TABLE jeu(
 nom VARCHAR(16),
@@ -135,7 +141,7 @@ CREATE TABLE liste_items_monde(
 id NUMERIC(7,0),
 item VARCHAR(32),
 
-CONSTRAINT Pk_ListItems PRIMARY KEY (id),
+CONSTRAINT Pk_ListItems PRIMARY KEY (id)
 
 );
 
@@ -165,8 +171,8 @@ CONSTRAINT cc_duree	CHECK(duree > 0)
 
 
 ALTER TABLE jeu
--- 	ADD CONSTRAINT fk_jeu_items FOREIGN KEY (listeItemRare) REFERENCES listeItemsMonde(id)
--- 	ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT fk_jeu_items FOREIGN KEY (liste_item_rare) REFERENCES liste_items_monde(id)
+ 	ON DELETE CASCADE ON UPDATE CASCADE,
 	ADD CONSTRAINT fk_jeu_habiletes FOREIGN KEY (liste_habiletes) REFERENCES liste_habilete_monde(id)
 	ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -178,13 +184,13 @@ ALTER TABLE liste_habilete_monde
 	ADD CONSTRAINT fk_habMon_hab FOREIGN KEY (habilete) REFERENCES habilete(nom)
 	ON DELETE CASCADE ON UPDATE CASCADE;
 
--- ALTER TABLE liste_items_monde
--- 	ADD CONSTRAINT fk_ItemMon_item FOREIGN KEY (item) REFERENCES Item(nom)
--- 	ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE liste_items_monde
+ 	ADD CONSTRAINT fk_ItemMon_item FOREIGN KEY (item) REFERENCES item(nom)
+ 	ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE liste_avatars_capsule
--- 	ADD CONSTRAINT fk_avt_avt FOREIGN KEY (avatar) REFERENCES avatar(nom)
--- 	ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT fk_avt_avt FOREIGN KEY (avatar) REFERENCES avatar(nom)
+	ON DELETE CASCADE ON UPDATE CASCADE,
 	ADD CONSTRAINT fk_avt_vis FOREIGN KEY (visite) REFERENCES liste_monde_duree(id)
 	ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -289,9 +295,9 @@ ALTER TABLE capsule_activite
 	ADD CONSTRAINT fk_capsule	
 		FOREIGN KEY (capsule) REFERENCES capsule(id);
 		
--- ALTER TABLE capsule
--- 	ADD CONSTRAINT fk_avatars_capsule	
--- 		FOREIGN KEY (liste_avatars) REFERENCES avatars_capsule(id);
+ALTER TABLE capsule
+ 	ADD CONSTRAINT fk_avatars_capsule	
+ 		FOREIGN KEY (liste_avatars) REFERENCES liste_avatars_capsule(id);
 		
 
 		
