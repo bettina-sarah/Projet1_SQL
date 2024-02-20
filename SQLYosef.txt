@@ -1,0 +1,62 @@
+-- ALTER TABLE IF EXISTS Jeu DROP CONSTRAINT IF EXISTS fk_jeu_items;
+ALTER TABLE IF EXISTS Jeu DROP CONSTRAINT IF EXISTS fk_jeu_habiletes;
+ALTER TABLE IF EXISTS Habilete DROP CONSTRAINT IF EXISTS fk_hab_lsCoef;
+ALTER TABLE IF EXISTS ListeHabileteMonde DROP CONSTRAINT IF EXISTS fk_habMon_hab;
+
+DROP TABLE IF EXISTS Jeu;
+DROP TABLE IF EXISTS ListeHabileteMonde;
+DROP TABLE IF EXISTS Habilete;
+DROP TABLE IF EXISTS ListeCoefsHabilete;
+
+CREATE TABLE Jeu(
+nom VARCHAR(6),
+description TEXT,
+listeItemRare NUMERIC(7,0),
+listeHabiletes NUMERIC(7,0),
+
+CONSTRAINT Pk_Jeu PRIMARY KEY (nom),
+CONSTRAINT cc_jeu_text CHECK(LENGTH(description)<=2048),
+CONSTRAINT cc_jeu_nom UNIQUE(nom)
+);
+
+CREATE TABLE Habilete(
+nom VARCHAR(32),
+energieMaximum NUMERIC(4,3),
+listeDeCoef NUMERIC(7,0),
+description VARCHAR(1024),
+
+CONSTRAINT Pk_Habilete PRIMARY KEY (nom),
+CONSTRAINT cc_hab_nom UNIQUE(nom),
+CONSTRAINT cc_hab_ener CHECK(energieMaximum BETWEEN 0 AND 1000),
+CONSTRAINT cc_hab_nomS CHECK(nom LIKE 'S%')
+);
+
+CREATE TABLE ListeCoefsHabilete(
+id NUMERIC(7,0),
+coef1 DOUBLE PRECISION DEFAULT 0,
+coef2 DOUBLE PRECISION DEFAULT 0,
+coef3 DOUBLE PRECISION DEFAULT 1,
+	
+CONSTRAINT Pk_ListCoef PRIMARY KEY (id)
+);
+
+CREATE TABLE ListeHabileteMonde(
+id NUMERIC(7,0),
+habilete VARCHAR(32),	
+	
+CONSTRAINT Pk_ListHabilte PRIMARY KEY (id)
+);
+
+ALTER TABLE Jeu
+-- 	ADD CONSTRAINT fk_jeu_items FOREIGN KEY (listeItemRare) REFERENCES listeItemsMonde(id)
+-- 	ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT fk_jeu_habiletes FOREIGN KEY (listeHabiletes) REFERENCES ListeHabileteMonde(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Habilete
+	ADD CONSTRAINT fk_hab_lsCoef FOREIGN KEY (listeDeCoef) REFERENCES ListeCoefsHabilete(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE ListeHabileteMonde
+	ADD CONSTRAINT fk_habMon_hab FOREIGN KEY (habilete) REFERENCES Habilete(nom)
+	ON DELETE CASCADE ON UPDATE CASCADE;
