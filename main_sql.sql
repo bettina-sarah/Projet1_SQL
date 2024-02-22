@@ -22,7 +22,7 @@ CREATE TABLE liste_couleurs (
 CREATE TABLE item (
 	nom				VARCHAR(32)			PRIMARY KEY,
 	sigle			CHAR(4)				UNIQUE,
-	probabilite		NUMERIC(1,3)		DEFAULT 0.025,
+	probabilite		NUMERIC(4,3)		DEFAULT 0.025,
 	description		VARCHAR(1024)		DEFAULT NULL,
 	
 	CONSTRAINT sig CHECK (sigle LIKE 'I%'),
