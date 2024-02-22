@@ -1,0 +1,74 @@
+INSERT INTO liste_phrases(id, phrase) VALUES (1000005,'TROP FACILE!!!');
+
+INSERT INTO liste_couleurs(id, couleur1, couleur2, couleur3) VALUES (1000005,'01270000','01870000','01970000');
+
+INSERT INTO liste_coefs_habilete (id, coef1, coef2, coef3) VALUES (1000005, 0.5, 1.5, 2.0);
+
+INSERT INTO habilete (nom, sigle, energie_maximum, liste_de_coef, description)
+VALUES
+('Ralentir le temps', 'SP1', 9.999, 1000005, 'Ralentit le temps pour une certaine durée'),
+('Bouclier de proximité', 'SP2', 8.999, 1000005, 'Protège des attaques directes'),
+('Invisibilité', 'SP3', 7.999, 1000005, 'Invisible pour une certaine durée');
+
+INSERT INTO liste_habiletes_avatar(id, date_obtention, niveau_actuel, habilete) VALUES 
+(1, CURRENT_TIMESTAMP, 1, 'Ralentir le temps'),
+(2, CURRENT_TIMESTAMP, 1, 'Bouclier de proximité'),
+(3, CURRENT_TIMESTAMP, 1, 'Invisibilité');
+
+INSERT INTO avatar (nom, liste_phrases_avatar, liste_couleurs_avatar, date_creation, moX, liste_habiletes, liste_items)
+VALUES
+('Avatar1', 1000005, 1000005, CURRENT_DATE, 16374805, 1000005, 1000005);
+
+INSERT INTO liste_avatars_capsule (id, avatar, visite ) VALUES (1000005, 'Avatar1',1000005);
+INSERT INTO capsule (id, liste_avatars, duree) VALUES (1000005, 1000005, 20000);
+INSERT INTO capsule_activite(id, capsule) VALUES (1000005, 1000005);
+INSERT INTO activite (id, debut_activite, liste_capsules_activite) VALUES (1000005, CURRENT_TIMESTAMP,1000005);
+INSERT INTO activite_joueur (id, activite) VALUES (1000005, 1000005);
+INSERT INTO avatar_joueur (id, avatar) VALUES (1000005, 'Avatar1');
+
+INSERT INTO joueur (alias, courriel, genre, date_inscription, date_naissance, liste_activites, liste_avatars)
+VALUES
+('Joueur2', 'joueur2@gmail.com', 'h', CURRENT_DATE, '2000-12-15', 1000005, 1000005);
+
+INSERT INTO item (nom, sigle, probabilite, description)
+VALUES
+('Diamant', 'ISP1', DEFAULT, 'Un diamant pas comme les autres!'),
+('Épée', 'ISP12', 0.225, 'Épée utilisée par l''ancien chef de cette planète'),
+('Oeuf', 'ISP3', 0.005, 'Oeuf inconnu!'),
+('Fusil d''Assault', 'ISP4', 0.405, 'Fusil d''Assault Standard'),
+('Objet', 'ISP5', 0.125, 'Objet inconnu!'),
+('Map', 'ISP6', 0.925, 'Une map de la planète');
+ 
+INSERT INTO jeu (nom, sigle, description, liste_item_rare, liste_habiletes)
+VALUES
+('SpaceX', 'XSPACE', 'Explorez les différentes planètes et survivez!', 1000005, 1000005);
+
+INSERT INTO liste_monde_duree (id, monde_duree ) VALUES (1000005,1000005);
+
+INSERT INTO monde_duree (id, monde, duree ) VALUES (1000005,'SpaceX', 15000);
+
+
+INSERT INTO liste_items_avatar (id, date_obtention, quantite, item)
+VALUES 
+(1000005, CURRENT_TIMESTAMP, 1, 'Diamant'),
+(1000006, CURRENT_TIMESTAMP, 2, 'Épée'),
+(1000007, CURRENT_TIMESTAMP, 3, 'Oeuf'),
+(1000008, CURRENT_TIMESTAMP, 1, 'Fusil d''Assault'),
+(1000009, CURRENT_TIMESTAMP, 1, 'Objet'),
+(1000010, CURRENT_TIMESTAMP, 1, 'Map');
+
+INSERT INTO liste_items_monde (id, item)
+VALUES 
+(1000005, 'Diamant'),
+(1000006, 'Épée'),
+(1000007, 'Oeuf'),
+(1000008, 'Fusil d''Assault'),
+(1000009, 'Objet'),
+(1000010, 'Map');
+ 
+INSERT INTO liste_habilete_monde (id, habilete)
+VALUES 
+(1000005, 'Ralentir le temps'),
+(1000006, 'Bouclier de proximité'),
+(1000007, 'Invisibilité');
+
