@@ -97,7 +97,7 @@ CONSTRAINT cc_jeu_sigUN UNIQUE(sigle)
 CREATE TABLE habilete(
 nom VARCHAR(32),
 sigle CHAR(3),
-energie_maximum NUMERIC(4,3),
+energie_maximum NUMERIC(7,3),
 liste_de_coef NUMERIC(7,0),
 description VARCHAR(1024),
 
