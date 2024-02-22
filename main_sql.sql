@@ -83,7 +83,7 @@ DROP TABLE IF EXISTS monde_duree CASCADE;
 
 CREATE TABLE jeu(
 nom VARCHAR(16),
-sigle VARCHAR(6),
+sigle CHAR(6),
 description TEXT,
 liste_item_rare NUMERIC(7,0),
 liste_habiletes NUMERIC(7,0),
@@ -96,7 +96,7 @@ CONSTRAINT cc_jeu_sigUN UNIQUE(sigle)
 
 CREATE TABLE habilete(
 nom VARCHAR(32),
-sigle VARCHAR(3),
+sigle CHAR(3),
 energie_maximum NUMERIC(4,3),
 liste_de_coef NUMERIC(7,0),
 description VARCHAR(1024),
