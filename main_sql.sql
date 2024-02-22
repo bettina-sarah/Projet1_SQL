@@ -46,8 +46,7 @@ CREATE TABLE liste_items_avatar (
 	quantite					BIGINT				DEFAULT 1,
 	item						VARCHAR(32),
 	
-	CONSTRAINT quant CHECK (quantite BETWEEN 1 AND 1000000),
-	CONSTRAINT fk_item_avatar FOREIGN KEY (item) REFERENCES item(nom)
+	CONSTRAINT quant CHECK (quantite BETWEEN 1 AND 1000000)
 );
 
 CREATE TABLE liste_habiletes_avatar (
@@ -56,20 +55,8 @@ CREATE TABLE liste_habiletes_avatar (
 	niveau_actuel				INTEGER				DEFAULT 1,
 	habilete					VARCHAR(32),
 	
-	CONSTRAINT niv CHECK (niveau_actuel BETWEEN 1 AND 100),
-	CONSTRAINT fk_hab_av FOREIGN KEY (habilete) REFERENCES habilete(nom)
+	CONSTRAINT niv CHECK (niveau_actuel BETWEEN 1 AND 100)
 );
-
-ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_phrases;
-ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_couleurs;
-ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_habiletes;
-ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_items;
-
-ALTER TABLE avatar
-    ADD CONSTRAINT fk_av_phrases FOREIGN KEY (liste_phrases_avatar) REFERENCES liste_phrases(id),
-	ADD CONSTRAINT fk_av_couleurs FOREIGN KEY (liste_couleurs_avatar) REFERENCES liste_couleurs(id),
-	ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes) REFERENCES liste_habiletes_avatar(id),
-	ADD CONSTRAINT fk_av_items FOREIGN KEY (liste_items) REFERENCES liste_items_avatar(id);
 
 
 
@@ -170,37 +157,6 @@ CONSTRAINT cc_duree	CHECK(duree > 0)
 );
 
 
-ALTER TABLE jeu
-	ADD CONSTRAINT fk_jeu_items FOREIGN KEY (liste_item_rare) REFERENCES liste_items_monde(id)
- 	ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT fk_jeu_habiletes FOREIGN KEY (liste_habiletes) REFERENCES liste_habilete_monde(id)
-	ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE Habilete
-	ADD CONSTRAINT fk_hab_lsCoef FOREIGN KEY (liste_de_coef) REFERENCES liste_coefs_habilete(id)
-	ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE liste_habilete_monde
-	ADD CONSTRAINT fk_habMon_hab FOREIGN KEY (habilete) REFERENCES habilete(nom)
-	ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE liste_items_monde
- 	ADD CONSTRAINT fk_ItemMon_item FOREIGN KEY (item) REFERENCES item(nom)
- 	ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE liste_avatars_capsule
-	ADD CONSTRAINT fk_avt_avt FOREIGN KEY (avatar) REFERENCES avatar(nom)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT fk_avt_vis FOREIGN KEY (visite) REFERENCES liste_monde_duree(id)
-	ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE liste_monde_duree
-	ADD CONSTRAINT fk_mon_dur FOREIGN KEY (monde_duree) REFERENCES monde_duree(id)
-	ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE monde_duree
-	ADD CONSTRAINT fk_mon_duree FOREIGN KEY (monde) REFERENCES jeu(nom)
-	ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- -- ******************************** FRANK
 
@@ -274,7 +230,66 @@ CREATE TABLE avatar_joueur(
 	CONSTRAINT pk_id_ava_jou			PRIMARY KEY(id)
 );
 
--- ################################### ALTERS ###################################
+
+-- ******************************** FOREIGN KEYS **********
+
+-- FOREIGN KEYS BETTINA
+
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_phrases;
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_couleurs;
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_habiletes;
+ALTER TABLE IF EXISTS avatar DROP CONSTRAINT IF EXISTS fk_av_items;
+
+ALTER TABLE avatar
+    ADD CONSTRAINT fk_av_phrases FOREIGN KEY (liste_phrases_avatar) REFERENCES liste_phrases(id),
+	ADD CONSTRAINT fk_av_couleurs FOREIGN KEY (liste_couleurs_avatar) REFERENCES liste_couleurs(id),
+	ADD CONSTRAINT fk_av_habiletes FOREIGN KEY (liste_habiletes) REFERENCES liste_habiletes_avatar(id),
+	ADD CONSTRAINT fk_av_items FOREIGN KEY (liste_items) REFERENCES liste_items_avatar(id);
+
+ALTER TABLE liste_items_avatar
+	ADD CONSTRAINT fk_item_avatar FOREIGN KEY (item) REFERENCES item(nom);
+	
+ALTER TABLE liste_habiletes_avatar
+	ADD CONSTRAINT fk_hab_av FOREIGN KEY (habilete) REFERENCES habilete(nom);
+	
+-- FOREIGN KEYS YOSEF
+	
+ALTER TABLE jeu
+	ADD CONSTRAINT fk_jeu_items FOREIGN KEY (liste_item_rare) REFERENCES liste_items_monde(id)
+ 	ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT fk_jeu_habiletes FOREIGN KEY (liste_habiletes) REFERENCES liste_habilete_monde(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Habilete
+	ADD CONSTRAINT fk_hab_lsCoef FOREIGN KEY (liste_de_coef) REFERENCES liste_coefs_habilete(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE liste_habilete_monde
+	ADD CONSTRAINT fk_habMon_hab FOREIGN KEY (habilete) REFERENCES habilete(nom)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE liste_items_monde
+ 	ADD CONSTRAINT fk_ItemMon_item FOREIGN KEY (item) REFERENCES item(nom)
+ 	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE liste_avatars_capsule
+	ADD CONSTRAINT fk_avt_avt FOREIGN KEY (avatar) REFERENCES avatar(nom)
+	ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT fk_avt_vis FOREIGN KEY (visite) REFERENCES liste_monde_duree(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE liste_monde_duree
+	ADD CONSTRAINT fk_mon_dur FOREIGN KEY (monde_duree) REFERENCES monde_duree(id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE monde_duree
+	ADD CONSTRAINT fk_mon_duree FOREIGN KEY (monde) REFERENCES jeu(nom)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+-- FOREIGN KEYS frank
+
 ALTER TABLE joueur
 	ADD CONSTRAINT fk_liste_activite	
 		FOREIGN KEY(liste_activites) REFERENCES activite_joueur(id);
