@@ -22,17 +22,17 @@ VALUES
 
 INSERT INTO liste_habiletes_avatar(id, date_obtention, niveau_actuel, habilete) VALUES 
 (1000005, CURRENT_TIMESTAMP, 1, 'Ralentir le temps'),
-(1000006, CURRENT_TIMESTAMP, 1, 'Bouclier de proximité'),
-(1000007, CURRENT_TIMESTAMP, 1, 'Invisibilité');
+(1000005, CURRENT_TIMESTAMP, 1, 'Bouclier de proximité'),
+(1000005, CURRENT_TIMESTAMP, 1, 'Invisibilité');
 
 INSERT INTO liste_items_avatar (id, date_obtention, quantite, item)
 VALUES 
 (1000005, CURRENT_TIMESTAMP, 1, 'Diamant'),
-(1000006, CURRENT_TIMESTAMP, 2, 'Épée'),
-(1000007, CURRENT_TIMESTAMP, 3, 'Oeuf'),
-(1000008, CURRENT_TIMESTAMP, 1, 'Fusil d''Assault'),
-(1000009, CURRENT_TIMESTAMP, 1, 'Objet'),
-(1000010, CURRENT_TIMESTAMP, 1, 'Map');
+(1000005, CURRENT_TIMESTAMP, 2, 'Épée'),
+(1000005, CURRENT_TIMESTAMP, 3, 'Oeuf'),
+(1000005, CURRENT_TIMESTAMP, 1, 'Fusil d''Assault'),
+(1000005, CURRENT_TIMESTAMP, 1, 'Objet'),
+(1000005, CURRENT_TIMESTAMP, 1, 'Map');
 
 INSERT INTO avatar (nom, liste_phrases_avatar, liste_couleurs_avatar, date_creation, moX, liste_habiletes, liste_items)
 VALUES
@@ -41,17 +41,17 @@ VALUES
 INSERT INTO liste_habilete_monde (id, habilete)
 VALUES 
 (1000005, 'Ralentir le temps'),
-(1000006, 'Bouclier de proximité'),
-(1000007, 'Invisibilité');
+(1000005, 'Bouclier de proximité'),
+(1000005, 'Invisibilité');
 
 INSERT INTO liste_items_monde (id, item)
 VALUES 
 (1000005, 'Diamant'),
-(1000006, 'Épée'),
-(1000007, 'Oeuf'),
-(1000008, 'Fusil d''Assault'),
-(1000009, 'Objet'),
-(1000010, 'Map');
+(1000005, 'Épée'),
+(1000005, 'Oeuf'),
+(1000005, 'Fusil d''Assault'),
+(1000005, 'Objet'),
+(1000005, 'Map');
 
 INSERT INTO jeu (nom, sigle, description, liste_item_rare, liste_habiletes)
 VALUES
