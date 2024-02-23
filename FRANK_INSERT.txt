@@ -1,0 +1,90 @@
+INSERT INTO liste_coefs_habilite 
+	VALUES(1000009, 0.5, 1.5, 2.0);
+
+INSERT INTO habilete(nom, sigle, energie_maximum, liste_de_coef, description)
+	VALUES	('Visée automatique', SF1, 500.500, 10000009, 'Améliore grandement la précision'),
+		('Ubiquité', SF2, 900.000, 10000009, 'Améliore la durée de la multiprésence');
+
+INSERT INTO liste_habilites_monde (id, habilete)
+	VALUES	(1000009, 'Visée automatique'),
+		(1000009, 'Ubiquité');
+
+INSERT INTO liste_habilite_avatar (id, date_obtention, niveau_actuel, habilite)
+	VALUES	(1000009, CURRENT_TIMESTAMP, 15,'Visée automatique'),
+		(1000009, CURRENT_TIMESTAMP, 5,'Ubiquité');
+
+INSERT INTO item (nom, sigle, description, probabilite)
+	VALUES	('Gros gun', IFZ1, 'Gros gun qui tue', 0.5),
+		('Épice magique', IFZ2, 'Poudre qui fait de la magie', 0.1),
+		('Cactus', IFZ3, 'Ça pique ayoye', 0.4),
+		('Anneau de santé', IFZ4, "Meilleur qu'une assurance vie", 0.2), 
+		('Bouteille vide', IFZ5, "N'étanche pas la soif", 0.9),
+		('Jeu de twister', IFZ6, "Toute une twist!", 0.23);
+
+INSERT INTO item_avatar (id, date_obtention, quantite' item)
+	VALUES	(1000009, CURRENT_TIMESTAMP, 10000, 'Épice magique'),
+		(1000009, CURRENT_TIMESTAMP, 11873, 'Cactus'),
+		(1000009, CURRENT_TIMESTAMP, 1, 'Anneau de santé');
+
+INSERT INTO items_monde (id, item)
+	VALUES	(1000009, 'Gros gun'),
+		(1000009, 'Épice magique'),
+		(1000009, 'Anneau de santé'),
+		(1000009, 'Bouteille vide'),
+		(1000009, 'Jeu de twister');
+
+INSERT INTO liste_couleurs_avatar (id, couleur1, couleur2, couleur3)
+	VALUES	(1000009,13378888,143744400,211111120);
+
+INSERT INTO liste_phrases(id, phrase)
+	VALUES	(1000009, "OK!"),
+		(1000009, "NEVER TRUST A TABLE!"),
+		(1000009, "NEVER ACCEPT A REQUEST!"),
+		(1000009, "I WILL BREAK YOUR JOINTURE!"),
+		(1000009, "ÇA MARCHE PAS PARCE QUE MON DO WHILE EST DANS LE DO!");
+
+INSERT INTO avatar (nom, liste_phrase, liste_couleur, date_de_creation, moX, liste_habiletes, liste_items)
+	VALUES	("Jacque Bling", 1000009, 1000009, CURRENT_DATE, 3, 1000009, 1000009);
+
+INSERT INTO liste_avatars_joueur (id, avatar)
+	VALUES	(1000009,"Jacque Bling");
+
+INSERT INTO jeu (nom, sigle, description, liste_items_rares, liste_habilietes)
+	VALUES	("FreeZoneX", FZONEX, "ZONEX LIBRE! VIVRE LE ZONEX", 1000009, 1000009);
+
+INSERT INTO monde_duree VALUES (1000009, "FreeZoneX", 400001);
+
+INSERT INTO liste_monde_duree (id, monde_duree)
+	VALUES 	(1000009, 1000009);
+
+INSERT INTO liste_avatar_capsule (id, avatar, visite) 
+	VALUES 	(1000009, 'Jacque Bling', 1000009);
+
+INSERT INTO capsule (id, listes_avatars, duree)
+	VALUES 	(1000009, 1000009, 140123);
+
+INSERT INTO liste_capsules_activite (id, capsule)
+	VALUES 	(1000009, 1000009);
+
+INSERT INTO activite (id, debut_activite, liste_capsule_activites)
+	VALUES	(1000009, CURRENT_TIMESTAMP, 1000009);
+
+INSERT INTO liste_activites_joueur (id, activite)
+	VALUES	(1000009, 1000009);
+
+INSERT INTO joueur (alias, courriel, mot_de_passe, genre, date_inscription, date_naissance, liste_activites, liste_avatars)
+	VALUES (XxX_frankislayer_XxX, masterfrank21@hotmail.com, 'h', CURRENT_DATE, "1997-02-09", 1000009, 1000009);   	
+	    
+
+
+ 
+ 
+		
+		
+	
+
+
+
+
+
+
