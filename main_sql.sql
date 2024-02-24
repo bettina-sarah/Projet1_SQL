@@ -152,6 +152,7 @@ CREATE TYPE genre_joueur AS ENUM
 	('f','h','x');
 CREATE TABLE joueur(
 	alias			VARCHAR(128),
+	mot_de_passe		VARCHAR(32),
 	courriel		VARCHAR(32) 	UNIQUE,
 	genre			genre_joueur	NULL,
 	date_inscription	DATE,
