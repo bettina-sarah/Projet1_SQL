@@ -25,12 +25,38 @@ INSERT INTO joueur (alias, courriel, mot_de_passe, genre, date_inscription, date
 	VALUES ('Bettina Janesch', 'patate@gmail.com', 'SQLmeTue1234', 'f', CURRENT_DATE, '1992-08-08'); 
 
 
+INSERT INTO activite (id, debut_activite)
+	VALUES	(8888881, CURRENT_TIMESTAMP),
+			(8888882, CURRENT_TIMESTAMP),
+			(8888883, CURRENT_TIMESTAMP);
+
+--3 activités pour le joueur
+INSERT INTO liste_activite_joueur (id, activite, joueur)
+	VALUES	(1000001, 8888881, 'Bettina Janesch'),
+			(1000002, 8888882, 'Bettina Janesch'),
+			(1000003, 8888883, 'Bettina Janesch');
+
+--3 capsules de durée varié:5h, 30 minutes et 1h de gameplay total
+INSERT INTO capsule (id, activite, avatar ,duree)
+	VALUES	(2000001, 8888881,'Guylaine Gagnon',18000), 	
+			(2000002, 8888882,'Guylaine Gagnon',1800),
+			(2000003, 8888883,'Guylaine Gagnon',3600);
 
 
+--plusieurs mondes visités pour la capsule de 5h total
+INSERT INTO liste_monde_duree (id, monde, duree, capsule)
+	VALUES 	(3000001, 'DeepHorizonX'    , 3600, 2000001),
+			(3000002, 'SpaceX'			, 5400, 2000001),
+			(3000003, 'FreeZoneX'	    , 2000, 2000001),
+			(3000004, 'SpaceX'  		, 7000, 2000001),
+			(3000005, 'DeepHorizonX'	, 1800, 2000002),
+			(3000006, 'SpaceX'		    , 3600, 2000003);
 
 
+INSERT INTO liste_coefs_habilete (id, coef1, coef2, coef3, habilete)
+    VALUES (4000001, 0.4, 0.8, 1.2, 'Auto guérison');
+    VALUES (4000002, 0.3, 0.9, 1.8, 'Implant d"un zoom oculaire');
 
-INSERT INTO liste_coefs_habilete (id, coef1, coef2, coef3) VALUES (2000008, 0.4, 0.8, 1.2);
 
 
 INSERT INTO liste_couleurs(id, couleur1, couleur2, couleur3) VALUES (2000008,'4026761247', NULL, NULL);
