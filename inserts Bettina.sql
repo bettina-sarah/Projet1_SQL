@@ -12,9 +12,9 @@ INSERT INTO item (nom, sigle, probabilite, description)
 VALUES
 ('Emeraude', 'IEME', 0.009, 'Une incroyable roche verte qui augmente ta santé de 10!!'),
 ('Noix de coco', 'INOI', 0.850, 'Regenere l"energie de moitié'),
-('Aiguisouille', 'IAIG', 0.999, 'Aiguise ton crayon... si t"en a un');
-('Perle noire', 'IPER', 0.001, 'Une perle rare qui équivaut 500000 moX!');
-('Dent de mammut', 'IMAM', 0.010, 'Augmente ta dexterité de 100');
+('Aiguisouille', 'IAIG', 0.999, 'Aiguise ton crayon... si t"en a un'),
+('Perle noire', 'IPER', 0.001, 'Une perle rare qui équivaut 500000 moX!'),
+('Dent de mammut', 'IMAM', 0.010, 'Augmente ta dexterité de 100'),
 ('Saphir', 'ISAP', 0.052, 'Augmente ton intelligence de 50');
 
 INSERT INTO jeu (nom, sigle, description)
@@ -44,58 +44,55 @@ INSERT INTO capsule (id, activite, avatar ,duree)
 
 
 --plusieurs mondes visités pour la capsule de 5h total
-INSERT INTO liste_monde_duree (id, monde, duree, capsule)
+INSERT INTO liste_monde_duree (id, jeu, duree, capsule)
 	VALUES 	(3000001, 'DeepHorizonX'    , 3600, 2000001),
-			(3000002, 'SpaceX'			, 5400, 2000001),
-			(3000003, 'FreeZoneX'	    , 2000, 2000001),
-			(3000004, 'SpaceX'  		, 7000, 2000001),
-			(3000005, 'DeepHorizonX'	, 1800, 2000002),
-			(3000006, 'SpaceX'		    , 3600, 2000003);
+-- 			(3000002, 'SpaceX'			, 5400, 2000001),
+-- 			(3000003, 'FreeZoneX'	    , 2000, 2000001),
+-- 			(3000004, 'SpaceX'  		, 7000, 2000001),
+			(3000005, 'DeepHorizonX'	, 1800, 2000002);
+--			(3000006, 'SpaceX'		    , 3600, 2000003);
 
 
-INSERT INTO liste_coefs_habilete (id, coef1, coef2, coef3, habilete)
-    VALUES (4000001, 0.4, 0.8, 1.2, 'Auto guérison');
-    VALUES (4000002, 0.3, 0.9, 1.8, 'Implant d"un zoom oculaire');
+INSERT INTO liste_coef_habilete (id, coef1, coef2, coef3, habilete)
+    VALUES (4000001, 0.4, 0.8, 1.2, 'Auto guérison'),
+     		(4000002, 0.3, 0.9, 1.8, 'Implant d"un zoom oculaire');
 
 
+INSERT INTO liste_couleur_avatar(id, couleur1, couleur2, couleur3, avatar)
+	VALUES (5000001,402676124, NULL, NULL, 'Guylaine Gagnon');
 
-INSERT INTO liste_couleurs(id, couleur1, couleur2, couleur3) VALUES (2000008,'4026761247', NULL, NULL);
+INSERT INTO liste_phrase_avatar (id, phrase, avatar)
+	VALUES (6000001,'Va chier mon pti criss', 'Guylaine Gagnon'),
+		 (6000002,'On fait le party a soir', 'Guylaine Gagnon');
+	
+INSERT INTO liste_habilete_monde (id, habilete, jeu)
+	VALUES (7000001, 'Auto guérison', 'DeepHorizonX'),
+			(7000002, 'Implant d"un zoom oculaire', 'DeepHorizonX');
 
-INSERT INTO liste_phrases(id, phrase) VALUES (2000008,'Va chier mon pti criss');
 
+INSERT INTO liste_habilete_avatar (id, date_obtention, niveau_actuel, habilete, avatar)
+VALUES 
+(8000001, CURRENT_TIMESTAMP, 1, 'Auto guérison', 'Guylaine Gagnon'),
+(8000002, CURRENT_TIMESTAMP, 1, 'Implant d"un zoom oculaire', 'Guylaine Gagnon');
 
-INSERT INTO liste_habiletes_avatar(id, date_obtention, niveau_actuel, habilete) VALUES 
-(2000008, CURRENT_TIMESTAMP, 1, 'Auto guérison'),
-(2000008, CURRENT_TIMESTAMP, 1, 'Implant d"un zoom oculaire');
+INSERT INTO liste_item_monde  (id, item, jeu)
+VALUES 
+(1100001, 'Emeraude', 'DeepHorizonX'),
+(1100002, 'Noix de coco', 'DeepHorizonX'),
+(1100003, 'Aiguisouille', 'DeepHorizonX'),
+(1100004, 'Perle noire', 'DeepHorizonX'),
+(1100005, 'Dent de mammut', 'DeepHorizonX'),
+(1100006, 'Saphir', 'DeepHorizonX');
 
-INSERT INTO liste_items_avatar (id, date_obtention, quantite, item)
+INSERT INTO liste_item_avatar (id, date_obtention, quantite, item, avatar)
 VALUES 	
-(2000008, CURRENT_TIMESTAMP, 1, 'Emeraude'),
-(2000008, CURRENT_TIMESTAMP, 2, 'Noix de coco'),
-(2000008, CURRENT_TIMESTAMP, 200000, 'Aiguisouille'),
-(2000008, CURRENT_TIMESTAMP, 1, 'Perle noire'),
-(2000008, CURRENT_TIMESTAMP, 2, 'Dent de mammut'),
-(2000008, CURRENT_TIMESTAMP, 1, 'Saphir');
+(9000001, CURRENT_TIMESTAMP, 1, 'Emeraude', 'Guylaine Gagnon'),
+(9000002, CURRENT_TIMESTAMP, 2, 'Noix de coco', 'Guylaine Gagnon'),
+(9000003, CURRENT_TIMESTAMP, 200000, 'Aiguisouille', 'Guylaine Gagnon'),
+(9000004, CURRENT_TIMESTAMP, 1, 'Perle noire', 'Guylaine Gagnon'),
+(9000005, CURRENT_TIMESTAMP, 2, 'Dent de mammut', 'Guylaine Gagnon'),
+(9000006, CURRENT_TIMESTAMP, 1, 'Saphir', 'Guylaine Gagnon');
 
 
-INSERT INTO liste_items_monde (id, item)
-VALUES 
-(4488844, 'Emeraude'),
-(4488844, 'Noix de coco'),
-(4488844, 'Aiguisouille'),
-(4488844, 'Perle noire'),
-(4488844, 'Dent de mammut'),
-(4488844, 'Saphir');
- 
-INSERT INTO liste_habilete_monde (id, habilete)
-VALUES 
-(4488844, 'Auto guérison'),
-(4488844, 'Implant d"un zoom oculaire');
 
-
-INSERT INTO monde_duree (id, monde, duree ) VALUES (1000005,'DeepHorizonX', 15000);
-
-INSERT INTO liste_monde_duree (id, monde_duree ) VALUES (4488844,9000);
-
-INSERT INTO liste_avatars_capsule (id, avatar, visite ) VALUES (2000008, 'Guylaine Gagnon', 2000008);
 
