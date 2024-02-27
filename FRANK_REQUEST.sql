@@ -49,10 +49,12 @@ SELECT SUM(ch.coef1*ha.niveau_actuel+ch.coef2*ha.niveau_actuel+ch.coef3) AS "Val
 		    ON ch.habilete = ha.habilete WHERE ha.avatar = 'Jacque Bling*'
 
 
-SELECT SUM(ch.coef1*ha.niveau_actuel+ch.coef2*ha.niveau_actuel+ch.coef3) AS "Valeur des habiletés"
+SELECT SUM(ch.coef1*ha.niveau_actuel+ch.coef2*ha.niveau_actuel+ch.coef3) AS "Valeur des habiletés", SUM(ia.quantite) AS "Valeur totale (quantité) des items"
 	FROM liste_habilete_avatar AS ha
 	LEFT OUTER JOIN liste_coef_habilete	AS ch	
 		ON ch.habilete = ha.habilete WHERE ha.avatar = 'Jacque Bling*'
+    LEFT OUTER JOIN liste_item_avatar	AS ia
+        ON ha.avatar = ia.avatar
 UNION
 SELECT SUM(quantite) AS "Valeur totale (quantité) des items"
 	FROM liste_item_avatar
