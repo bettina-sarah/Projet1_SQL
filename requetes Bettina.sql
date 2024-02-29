@@ -1,23 +1,26 @@
 ----------------------- REQUETES BETTINA ----------------------------------
 
 --- REQUETE 3 ---
---Enoncé: Pour l’avatar principal, donnez toutes les habiletés qu’il possède en présentant : 
---le sigle et le nom (habilete) || '[' ||
+-- ENONCÉ: Pour l’avatar principal, donnez toutes les habiletés qu’il possède en présentant : le sigle et le nom
 --entre crochets dans la même colonne, la date d’obtention, le niveau courant, la valeur en moX
---liste_habilete_avatar: date_obtention, niveau_actuel, ||
---liste_coef_habilete: valeur en mox = coef1 × niveau_actuel**niveau_actuel + coef2 × niveau_actuel + coef3 ||']';
-
 --du niveau courant et le coût en moX pour acheter le prochain niveau. 
---cout mox prochain niveau: mox prochain niv = coef1 × (niveau_actuel+1)**(niveau_actuel+1) +
-	-- coef2 × (niveau_actuel+1) + coef3;
---cout en mox pour acheter: mox_niv_prochain - mox_niv_actuel
+--AUTEUR: BETTINA
+--Fonctionelle: OUI
 
 
-
-
-SELECT habilete AS "Habilete", habilete.sigle AS "Sigle", avatar AS "Avatar"
-	FROM liste_habilete_avatar INNER JOIN habilete 
-		ON liste_habilete_avatar.habilete = habilete.nom WHERE avatar LIKE '%*'                            
+SELECT avatar AS "Avatar", 
+	'[' || habilete.sigle || ' - ' || habilete.nom || ']' AS "Sigle et nom",
+	liste_av.date_obtention AS "Date dobtention",
+	liste_av.niveau_actuel AS "Niveau actuel",
+	((liste_coef.coef1*liste_av.niveau_actuel*liste_av.niveau_actuel)
+	+ (liste_coef.coef2*liste_av.niveau_actuel) + liste_coef.coef3) AS "moX du niveau courant",
+	((liste_coef.coef1*(liste_av.niveau_actuel+1)*(liste_av.niveau_actuel+1))
+	+ (liste_coef.coef2*(liste_av.niveau_actuel+1)) + liste_coef.coef3) AS "moX du prochain niveau"
+	FROM liste_habilete_avatar AS liste_av INNER JOIN habilete
+	ON liste_av.habilete = habilete.nom
+	INNER JOIN liste_coef_habilete AS liste_coef
+	ON liste_coef.habilete = habilete.nom
+		 WHERE avatar LIKE '%*'                      
 		
 
 
