@@ -39,3 +39,22 @@ ON liste_av.avatar = av.nom
 INNER JOIN liste_item_avatar AS liste_it
 ON av.nom = liste_it.avatar
 WHERE liste_it.quantite > 1;
+
+-- REQUETE 7A (3 tables)
+--Requete personnelle: Selectionner tous les capsules qui appartiennent a l'avatar Guylaine Gagnon qui
+--sont de plus qu'une heur en durée et les ordonner en decroissance, et montrer les 2 capsules plus longues
+--AUTEUR: BETTINA
+--Fonctionelle: OUI
+
+	SELECT c.id,
+		c.duree,
+		a.nom AS avatar_name,
+		a.moX,
+		ac.debut_activite
+	FROM capsule AS c
+	INNER JOIN avatar AS a ON c.avatar = a.nom
+	INNER JOIN liste_activite_joueur AS ac ON c.activite = ac.activite
+	WHERE a.nom = 'Guylaine Gagnon'
+	AND c.duree > 3600  -- Capsules with a duration greater than 1 hour
+	ORDER BY c.duree DESC
+	LIMIT 2;
