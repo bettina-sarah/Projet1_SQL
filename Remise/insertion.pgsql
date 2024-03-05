@@ -316,7 +316,75 @@ INSERT INTO liste_avatar_joueur (id, avatar, joueur)
 
 ---------------------------------------------------------------------------------------------------------------
 	    
+--------------------------------------------- INSERT JUSTIN ------------------------------------------------------------------
 
+
+INSERT INTO avatar (nom, date_creation, moX)
+VALUES
+('John Smith', CURRENT_DATE, 654321);
+
+INSERT INTO habilete (nom, sigle, energie_maximum, description)
+VALUES
+('Hot Sauce', 'SF3', 420.69, 'Crache du feu'),
+('Drain de vie', 'SD3', 15.999, 'Draine la santé de ton ennemi');
+
+INSERT INTO joueur (alias, courriel, mot_de_passe, genre, date_inscription, date_naissance)
+	VALUES ('Justin Twarabimenye', 'justin123@gmail.com', 'MDP123abc', 'm', CURRENT_DATE, '1993-05-05'); 
+
+
+INSERT INTO activite (id, debut_activite)
+	VALUES	(2222220, CURRENT_TIMESTAMP),
+			(2222221, CURRENT_TIMESTAMP),
+			(2222222, CURRENT_TIMESTAMP);
+
+
+INSERT INTO liste_activite_joueur (id, activite, joueur)
+	VALUES	(1000011, 2222220, 'Justin Twarabimenye'),
+			(1000012, 2222221, 'Justin Twarabimenye'),
+			(1000013, 2222222, 'Justin Twarabimenye');
+
+INSERT INTO capsule (id, activite, avatar ,duree)
+	VALUES	(2000011, 2222220,'John Smith',12600), 	
+			(2000012, 2222221,'John Smith',5400),
+			(2000013, 2222222,'John Smith',3600);
+
+INSERT INTO liste_monde_duree (id, jeu, duree, capsule)
+	VALUES 	(4000001,'FreeZoneX', 5000, 2000011),
+ 			(4000002,'SpaceX', 1800, 2000011),
+			(4000003,'DeepHorizonX', 4800, 2000011),
+
+
+INSERT INTO liste_coef_habilete (id, coef1, coef2, coef3, habilete)
+    VALUES (5000001, 0.2, 0.6, 1.1, 'Hot Sauce'),
+     		(5000002, 0.4, 0.8, 1.3, 'Drain de vie');
+
+
+INSERT INTO liste_couleur_avatar(id, couleur1, couleur2, couleur3, avatar)
+	VALUES (7770001,123455550, 123455551, 123455552, 'John Smith');
+
+INSERT INTO liste_phrase_avatar (id, phrase, avatar)
+	VALUES (7000001,'C'est ça qui est ça', 'John Smith'),
+		 (7000002,'On fait se qui faut', 'John Smith');
+	
+INSERT INTO liste_habilete_monde (id, habilete, jeu)
+	VALUES (8000001, 'Drain de vie', 'DeepHorizonX'),
+			(8000002, 'Hot Sauce', 'FreeZoneX');
+
+
+INSERT INTO liste_habilete_avatar (id, date_obtention, niveau_actuel, habilete, avatar)
+VALUES 
+(9000011, CURRENT_TIMESTAMP, 1, 'Auto guérison', 'John Smith'),
+(9000012, CURRENT_TIMESTAMP, 1, 'Hot Sauce', 'John Smith');
+
+
+INSERT INTO liste_item_avatar (id, date_obtention, quantite, item, avatar)
+VALUES 	
+(3000001, CURRENT_TIMESTAMP, 2, 'Gros gun', 'John Smith'),
+(3000002, CURRENT_TIMESTAMP, 5, 'Épice magique', 'John Smith'),
+(3000003, CURRENT_TIMESTAMP, 4, 'Oeuf', 'John Smith'),
+(3000004, CURRENT_TIMESTAMP, 40, 'Noix de coco', 'John Smith'),
+(3000005, CURRENT_TIMESTAMP, 2, 'Dent de mammouth', 'John Smith'),
+(3000006, CURRENT_TIMESTAMP, 20, 'Saphir', 'John Smith');
 
  
  
