@@ -1,0 +1,62 @@
+-----------------------------------YOSEF-REQUESTS----------------------------------------------------------------
+
+----REQUETE-5--------
+--No de la requête: 5
+--Énoncé de la requête: Pour le joueur principal, donnez le nombre total d’heures passées dans chaque jeu joué.
+--Auteur: Yosef 
+--Fonctionnelle: Oui
+ 
+SELECT jeu.nom AS Monde, ROUND((SUM(lmd.duree)/3600),2) || ' ' ||'heure(s)' AS "Heures Totales"
+FROM joueur AS jp
+	INNER JOIN liste_activite_joueur AS laj
+		ON jp.alias = laj.joueur
+	INNER JOIN capsule AS cps
+		ON laj.activite = cps.activite
+	INNER JOIN liste_monde_duree AS lmd
+		ON cps.id = lmd.capsule
+	INNER JOIN jeu 
+		ON lmd.jeu = jeu.nom
+WHERE jp.alias = 'Francois Bouchard*'
+GROUP BY jeu.nom;
+
+----REQUETE-7-------------------
+--No de la requête: 7 (5 tables)
+--Énoncé de la requête: 
+--a. il doit avoir au minimum 5 tables dans l’une de votre requête
+--b. vous devez utiliser ces clauses: LIMIT, GROUP BY, ORDER BY, HAVING. 
+--Auteur: Yosef 
+--Fonctionnelle: Oui
+--Permet de voir les mondes en fonction de leur nombre de visites,de leur moyenne de temps par visite(doit être plus grand que 5 minutes)
+--ainsi que le joueur qui a visité ce monde le plus de fois avec son nombre de visites.
+
+SELECT 
+  jeu.nom AS "Monde",
+  jeu.sigle AS "Sigle",
+  COUNT(DISTINCT lmd.id) AS "Nombres de visites par monde",
+  
+  (SELECT laj.joueur || ' ' || COUNT(*) || ' visite(s)'
+   FROM liste_activite_joueur AS laj
+   		INNER JOIN activite AS act
+   			ON laj.activite = act.id
+   		INNER JOIN capsule AS cps
+   			ON act.id = cps.activite
+   		INNER JOIN liste_monde_duree AS lmd
+   			ON cps.id = lmd.capsule
+   WHERE lmd.jeu = jeu.nom
+   GROUP BY laj.joueur
+   ORDER BY COUNT(*) DESC LIMIT 1
+  ) AS "Joueur le plus actif/visites",
+  
+  ROUND((AVG(lmd.duree)/60),2) AS "Moyenne du temps passé (minutes)/Joueur" 
+FROM jeu	
+	INNER JOIN liste_monde_duree AS lmd 
+		ON jeu.nom = lmd.jeu
+	INNER JOIN capsule AS cps 
+		ON lmd.capsule = cps.id
+	INNER JOIN activite AS act 
+		ON cps.activite = act.id
+GROUP BY jeu.nom, jeu.sigle
+HAVING ROUND(AVG(lmd.duree)/60, 2) > 5
+ORDER BY "Nombres de visites par monde" DESC
+LIMIT 3;
+
