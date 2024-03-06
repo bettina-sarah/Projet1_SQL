@@ -25,21 +25,14 @@ WHERE laj.joueur ='Francois Bouchard*';
 
 -- REQUETE 7D (5 tables)
 --Requete personnelle: Selectionner les 3 avatars avec les plus de items, les ordonner en décroissance tout en montrant
--- le joueur assigné ainsi que la date de création de l'avatar, la phrase favorite de l'avatar ainsi que sa couleur préféré
+-- le joueur assigné ainsi que la date de création de l'avatar, la phrase favorite de l'avatar ainsi que la duree de jeu total de l'avatar
 --AUTEUR: JUSTIN 
 --Fonctionelle: OUI
 
 SELECT 
     SUM(items.quantite) AS Items, 
     items.avatar, 
-    MAX(liste_phrase_avatar.phrase) AS phrase, 
-    CONCAT(
-        ((a.couleur1 >> 16) & 255),
-        '-',
-        ((a.couleur1 >> 8) & 255),
-        '-',
-        (a.couleur1 & 255)
-    ) AS "couleur préféré en RGB", 
+    capsule.duree as "DUREE DE JEU",
     liste_avatar_joueur.joueur, 
     avatar.date_creation
 FROM 
@@ -49,14 +42,15 @@ INNER JOIN
 INNER JOIN 
     avatar ON avatar.nom = liste_avatar_joueur.avatar
 INNER JOIN 
-    liste_couleur_avatar AS a ON a.avatar = items.avatar
+    (SELECT avatar, SUM(duree) AS duree FROM capsule GROUP BY avatar) AS capsule 
+    ON capsule.avatar = items.avatar
 INNER JOIN 
     (SELECT avatar, MAX(phrase) AS phrase FROM liste_phrase_avatar GROUP BY avatar) AS liste_phrase_avatar 
     ON liste_phrase_avatar.avatar = items.avatar
 GROUP BY 
-    items.avatar, a.couleur1, avatar.date_creation, liste_avatar_joueur.joueur
+    items.avatar, avatar.date_creation, liste_avatar_joueur.joueur, capsule.duree
 HAVING 
     SUM(items.quantite) > 50
 ORDER BY 
-    Items DESC 
+    Items DESC
 LIMIT 3;
