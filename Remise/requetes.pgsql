@@ -7,14 +7,29 @@
 --Fonctionnel: OUI
 SELECT alias, courriel, date_inscription FROM joueur;
 
+--- REQUETE 2 ---
+-- ENONCÉ: Donnez la liste des avatars d’un joueur quelconque (pour l’exemple, prendre le joueur principal),
+--en donnant : nom, la couleur préférée transformée en trois composantes rouge-vert-bleu, date
+--de création suivant le format 2000 | 12 | 25, le nombre de moX.
+--AUTEUR: JUSTIN
+--Fonctionelle: OUI
 
---- Requete #2 ---
-
--- Pour l’avatar principal, donnez toutes les habiletés qu’il possède en présentant : le sigle et le nom
--- entre crochets dans la même colonne, la date d’obtention, le niveau courant, la valeur en moX
--- du niveau courant et le coût en moX pour acheter le prochain niveau.
---Justin
---Fonctionnel: ?????
+SELECT a.avatar AS Avatar,
+	CONCAT(
+        ((a.couleur1 >> 16) & 255),
+        '-',
+        ((a.couleur1 >> 8) & 255),
+        '-',
+        (a.couleur1 & 255)
+    ) AS "couleur préféré en RGB",
+    TO_CHAR(avatar.date_creation, 'YYYY | MM | DD') AS "Date de création",
+    avatar.mox AS "Nombre de moX", laj.joueur 
+FROM liste_couleur_avatar as a
+	JOIN
+    avatar as avatar ON a.avatar = avatar.nom
+	JOIN 
+	liste_avatar_joueur as laj ON a.id = laj.id
+WHERE laj.joueur ='Francois Bouchard*';
 
 --- REQUETE 3 ---
 
@@ -114,9 +129,9 @@ WHERE liste_it.quantite > 1;
 --Requete #7B (4 tables)
 --auteur: Francois
 --Fonctionelle: oui
---Détermine le cps(cactus par seconde) de chaque avatar, 
---Affiche le joueur associées à l'avatars, le temps de jeu total(converti en minute) par avatar ainsi que le nombre de cactus qu'il possède, 
---montre aussi le nombre d'activité total du joueur, les rangées sont classé par le cps le plus élevés. Nous avons maintenant le leaderboard global des joueurs ayant le meilleur rendement de cultivation de cactus
+-- 
+--Affiche chaque avatar possedant des cactus ainsi que le joueur associé et le nombre de cactus en inventaire, affiche le temps de jeu total(converti en minute) et le nombre d'activité total du joueur
+--Détermine le cps(cactus par seconde) de chaque avatar. La table est classée par le cps le plus élevés. Nous avons maintenant le leaderboard global des joueurs ayant le meilleur rendement de cultivation de cactus avec leurs nombres d'activité.
 
 SELECT 
 	ja.joueur AS "Joueur", 
@@ -176,6 +191,38 @@ FROM jeu
 GROUP BY jeu.nom, jeu.sigle
 HAVING ROUND(AVG(lmd.duree)/60, 2) > 5
 ORDER BY "Nombres de visites par monde" DESC
+LIMIT 3;
+
+-- REQUETE 7D (5 tables)
+--Requete personnelle: Selectionner les 3 avatars avec les plus de items, les ordonner en décroissance tout en montrant
+-- le joueur assigné ainsi que la date de création de l'avatar, la phrase favorite de l'avatar ainsi que la duree de jeu total de l'avatar
+--AUTEUR: JUSTIN 
+--Fonctionelle: OUI
+
+SELECT 
+    SUM(items.quantite) AS Items, 
+    items.avatar, 
+    capsule.duree as "DUREE DE JEU",
+    liste_avatar_joueur.joueur, 
+    avatar.date_creation
+FROM 
+    liste_item_avatar AS items
+INNER JOIN 
+    liste_avatar_joueur ON liste_avatar_joueur.avatar = items.avatar
+INNER JOIN 
+    avatar ON avatar.nom = liste_avatar_joueur.avatar
+INNER JOIN 
+    (SELECT avatar, SUM(duree) AS duree FROM capsule GROUP BY avatar) AS capsule 
+    ON capsule.avatar = items.avatar
+INNER JOIN 
+    (SELECT avatar, MAX(phrase) AS phrase FROM liste_phrase_avatar GROUP BY avatar) AS liste_phrase_avatar 
+    ON liste_phrase_avatar.avatar = items.avatar
+GROUP BY 
+    items.avatar, avatar.date_creation, liste_avatar_joueur.joueur, capsule.duree
+HAVING 
+    SUM(items.quantite) > 50
+ORDER BY 
+    Items DESC
 LIMIT 3;
 
 
