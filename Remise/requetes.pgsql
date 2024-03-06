@@ -5,7 +5,8 @@
 --Donnez la liste de tous les joueurs en présentant : alias, courriel, date d’inscription. 
 --François
 --Fonctionnel: OUI
-SELECT alias, courriel, date_inscription FROM joueur;
+SELECT alias AS "Alias", courriel AS "Courriel", date_inscription AS "Inscription"
+ 	FROM joueur;
 
 --- REQUETE 2 ---
 -- ENONCÉ: Donnez la liste des avatars d’un joueur quelconque (pour l’exemple, prendre le joueur principal),
