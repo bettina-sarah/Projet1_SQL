@@ -5,9 +5,8 @@
 --AUTEUR: JUSTIN
 --Fonctionelle: OUI
 
-SELECT
-    a.avatar AS Avatar,
-    CONCAT(
+SELECT a.avatar AS Avatar,
+	CONCAT(
         ((a.couleur1 >> 16) & 255),
         '-',
         ((a.couleur1 >> 8) & 255),
@@ -22,19 +21,42 @@ FROM liste_couleur_avatar as a
 	JOIN 
 	liste_avatar_joueur as laj ON a.id = laj.id
 	
-Where laj.joueur ='Francois Bouchard*';
+WHERE laj.joueur ='Francois Bouchard*';
 
--- REQUETE 7 (3 tables)
---Requete personnelle: Selectionner les 3 joueurs avec les plus de items, les ordonner en décroissance tout en montrant
--- le joueur assigné ainsi que la date de création de l'avatar
+-- REQUETE 7D (5 tables)
+--Requete personnelle: Selectionner les 3 avatars avec les plus de items, les ordonner en décroissance tout en montrant
+-- le joueur assigné ainsi que la date de création de l'avatar, la phrase favorite de l'avatar ainsi que sa couleur préféré
 --AUTEUR: JUSTIN 
 --Fonctionelle: OUI
 
-SELECT SUM(items.quantite)AS Items, items.avatar, liste_avatar_joueur.joueur, avatar.date_creation
-FROM liste_item_avatar as items
-INNER JOIN liste_avatar_joueur on liste_avatar_joueur.avatar = items.avatar
-INNER JOIN avatar on avatar.nom = liste_avatar_joueur.avatar
-GROUP BY items.avatar, liste_avatar_joueur.joueur, avatar.date_creation
-HAVING SUM(items.quantite) > 50
-ORDER by Items DESC 
-LIMIT 3
+SELECT 
+    SUM(items.quantite) AS Items, 
+    items.avatar, 
+    MAX(liste_phrase_avatar.phrase) AS phrase, 
+    CONCAT(
+        ((a.couleur1 >> 16) & 255),
+        '-',
+        ((a.couleur1 >> 8) & 255),
+        '-',
+        (a.couleur1 & 255)
+    ) AS "couleur préféré en RGB", 
+    liste_avatar_joueur.joueur, 
+    avatar.date_creation
+FROM 
+    liste_item_avatar AS items
+INNER JOIN 
+    liste_avatar_joueur ON liste_avatar_joueur.avatar = items.avatar
+INNER JOIN 
+    avatar ON avatar.nom = liste_avatar_joueur.avatar
+INNER JOIN 
+    liste_couleur_avatar AS a ON a.avatar = items.avatar
+INNER JOIN 
+    (SELECT avatar, MAX(phrase) AS phrase FROM liste_phrase_avatar GROUP BY avatar) AS liste_phrase_avatar 
+    ON liste_phrase_avatar.avatar = items.avatar
+GROUP BY 
+    items.avatar, a.couleur1, avatar.date_creation, liste_avatar_joueur.joueur
+HAVING 
+    SUM(items.quantite) > 50
+ORDER BY 
+    Items DESC 
+LIMIT 3;
